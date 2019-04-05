@@ -9,13 +9,15 @@ class Circulo:
         self.r = radio
 
     def area(self):
-        a = self.r
+        a = math.pi * math.pow(self.r, 2)
+        return a
 
     def perimetro(self):
-        per = (self.r * math.pi)/2
+        per = 2 *math.pi * self.r
         return per
 
 a = Circulo(5)
-assert (a.perimetro() == 7.853981633974483)
+assert (a.perimetro() == 31.41592653589793)
+assert (a.area() == 78.53981633974483)
 
 

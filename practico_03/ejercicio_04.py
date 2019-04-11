@@ -7,9 +7,29 @@ import datetime
 from practico_03.ejercicio_01 import reset_tabla
 from practico_03.ejercicio_02 import agregar_persona
 
+import mysql.connector
+
+mydb = mysql.connector.connect(
+    host = 'localhost',
+    user = 'root',
+    passwd = '2458L.a.m',
+    database ='practica3'
+)
+
+mycurr = mydb.cursor()
+
 
 def buscar_persona(id_persona):
-    return False
+    sql = "SELECT * FROM persona WHERE IdPersona = %s"
+    val = (id_persona, )
+    mycurr.execute(sql, val)
+    myresult = mycurr.fetchall()
+
+    if myresult == []:
+        return False
+    else:
+        return myresult[0]
+
 
 
 @reset_tabla

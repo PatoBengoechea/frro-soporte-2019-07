@@ -7,7 +7,6 @@
 
 # Implementar la funcion borrar_tabla, que borra la tabla creada anteriormente.
 
-
 import mysql.connector
 
 mydb = mysql.connector.connect(
@@ -21,8 +20,7 @@ mycursor = mydb.cursor()
 
 
 def crear_tabla():
-
-    mycursor.execute("CREATE TABLE Persona ("
+    mycursor.execute("CREATE TABLE persona ("
                      "IdPersona INT AUTO_INCREMENT PRIMARY KEY, "
                      "Nombre VARCHAR(30), "
                      "FechaNacimiento date, "
@@ -31,9 +29,8 @@ def crear_tabla():
 
 
 def borrar_tabla():
-    pass
-    mycursor.execute("DROP TABLE Persona")
 
+    mycursor.execute("DROP TABLE persona")
 
 # no modificar
 def reset_tabla(func):
@@ -44,4 +41,5 @@ def reset_tabla(func):
     return func_wrapper
 
 
+#mydb.close()
 

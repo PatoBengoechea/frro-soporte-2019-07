@@ -16,14 +16,37 @@
 
 import datetime
 
-from practico_03.ejercicio_02 import agregar_persona
-from practico_03.ejercicio_06 import reset_tabla
-from practico_03.ejercicio_07 import agregar_peso
+from ejercicio_02 import agregar_persona
+from ejercicio_06 import reset_tabla
+from ejercicio_07 import agregar_peso
+from ejercicio_04 import buscar_persona
+
+import mysql.connector
+
+mydb = mysql.connector.connect(
+    host = 'localhost',
+    user = 'root',
+    passwd = '2458L.a.m',
+    database = 'practica3'
+)
+
+mycur = mydb.cursor()
 
 
 def listar_pesos(id_persona):
-    return []
+    pp = []
+    if buscar_persona(id_persona) == False:
+        print("No existe la persona")
+    else:
+        mycur.execute( "SELECT fecha, peso FROM personaPeso")
+        myresult = mycur.fetchall()
 
+        for x in myresult:
+           r = (x[0].strftime("%Y-%m-%d"),x[1])
+           pp.append(r)
+
+    print(pp)
+    return pp
 
 @reset_tabla
 def pruebas():

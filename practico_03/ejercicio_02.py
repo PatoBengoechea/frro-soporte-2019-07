@@ -23,15 +23,23 @@ def agregar_persona(nombre, nacimiento, dni, altura):
     mycurr.execute(sql,val)
     mydata.commit()
     print(mycurr.rowcount, "registro cargado")
-    return 0
+    if mycurr.rowcount > 0: #devolucion del id >>>
+        sql = "SELECT IdPersona FROM persona WHERE Dni = %s"
+        val = (dni, )
+        mycurr.execute(sql, val)
+        myresult = mycurr.fetchall()
+
+        return myresult[0][0]
+    else:
+        return 0
 
 
 @reset_tabla
 def pruebas():
     id_juan = agregar_persona('juan perez', datetime.datetime(1988, 5, 15), 32165498, 180)
     id_marcela = agregar_persona('marcela gonzalez', datetime.datetime(1980, 1, 25), 12164492, 195)
-    assert (id_juan == 0)
-    assert (id_marcela > id_juan) == False
+    assert (id_juan == 1)
+    assert (id_marcela < id_juan) == False
 
 if __name__ == '__main__':
     pruebas()

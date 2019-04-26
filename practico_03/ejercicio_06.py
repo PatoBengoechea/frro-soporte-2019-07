@@ -5,15 +5,30 @@
 
 # Implementar la funcion borrar_tabla, que borra la tabla creada anteriormente.
 
-from practico_03.ejercicio_01 import borrar_tabla, crear_tabla
+from ejercicio_01 import borrar_tabla, crear_tabla
 
+import mysql.connector
+
+mydb = mysql.connector.connect(
+    host = 'localhost',
+    user ='root',
+    passwd = '2458L.a.m',
+    database ='practica3'
+)
+
+mycur = mydb.cursor()
 
 def crear_tabla_peso():
-    pass
+    mycur.execute( "CREATE TABLE personaPeso(" 
+          "idPeso int PRIMARY KEY AUTO_INCREMENT," 
+          "fecha date," 
+          "peso int,"
+          "idPersona int,"
+          "FOREIGN KEY (idPersona) REFERENCES persona(id_persona));")
 
 
 def borrar_tabla_peso():
-    pass
+    mycur.execute("DROP TABLE personaPeso")
 
 
 # no modificar

@@ -9,7 +9,7 @@ def suma():
  a = op1.get()
  b = op2.get()
  res = a + b
- etiqueta1 = Label(ventana, text= '%s + %s = %s' % (a, b, res)).place(x=10, y=260)
+ etiqueta1 = Label(ventana, text= '%s + %s = %s' % (a, b, res)).place(x=10, y=160)
  print('El resultado: ', res)
  return 0
 
@@ -17,7 +17,7 @@ def resta():
  a = op1.get()
  b = op2.get()
  res = a - b
- etiqueta1 = Label(ventana, text= '%s - %s = %s' % (a, b, res)).place(x=10, y=260)
+ etiqueta1 = Label(ventana, text= '%s - %s = %s' % (a, b, res)).place(x=10, y=160)
  print('El resultado: ', res)
  return yres
 
@@ -25,7 +25,7 @@ def multiplica():
  a = op1.get()
  b = op2.get()
  res = a * b
- etiqueta1 = Label(ventana, text= '%s * %s = %s' % (a, b, res)).place(x=10, y=260)
+ etiqueta1 = Label(ventana, text= '%s * %s = %s' % (a, b, res)).place(x=10, y=160)
  print('El resultado: ', res)
  return 0
 
@@ -33,7 +33,7 @@ def divide():
  a = op1.get()
  b = op2.get()
  res = a / b
- etiqueta1 = Label(ventana, text= '%s / %s = %s' % (a, b, res)).place(x=10, y=260)
+ etiqueta1 = Label(ventana, text= '%s / %s = %s' % (a, b, res)).place(x=10, y=160)
  print('El resultado: ', res)
  return 0
 
@@ -45,7 +45,7 @@ op2 = IntVar()
 yres = 260
 
 ventana.title('Practica 4 - Ejercicio 1')
-ventana.geometry('700x500')
+ventana.geometry('700x250')
 etiqueta1 = Label(ventana, text= 'Primer Operando', ).place(x=10, y=40)
 caja_op1 = Entry(ventana, textvariable= op1).place(x=10,y=80)
 etiqueta2 = Label(ventana, text= 'Segundo Operando', ).place(x=150, y=40)

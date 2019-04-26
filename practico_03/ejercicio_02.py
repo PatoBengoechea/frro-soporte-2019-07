@@ -23,15 +23,8 @@ def agregar_persona(nombre, nacimiento, dni, altura):
     mycurr.execute(sql,val)
     mydata.commit()
     print(mycurr.rowcount, "registro cargado")
-    if mycurr.rowcount > 0: #devolucion del id >>>
-        sql = "SELECT IdPersona FROM persona WHERE Dni = %s"
-        val = (dni, )
-        mycurr.execute(sql, val)
-        myresult = mycurr.fetchall()
+    return mycurr.lastrowid
 
-        return myresult[0][0]
-    else:
-        return 0
 
 
 @reset_tabla

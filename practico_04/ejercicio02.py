@@ -95,7 +95,7 @@ def divide():
     global aux, aux2, totalizador, aux3
     if totalizador == 0:
         totalizador = aux2 / aux
-        aux = 0
+        aux = 1
         aux2 = 0
         return totalizador
     else:
@@ -179,9 +179,9 @@ but12= Button(ventana, text='-',width=wb, height=wb, command=lambda: anteintro2(
 but13= Button(ventana, text='*',width=wb, height=wb, command=lambda: anteintro2('*'),).place(x=xc4, y=yf3)
 but14= Button(ventana, text='/',width=wb, height=wb, command=lambda: anteintro2('/'),).place(x=xc4, y=yf4)
 but15= Button(ventana, text='=',width=9,height=wb, background= 'orange', command=antecalculo).place(x=xc2, y=yf4)
-but15= Button(ventana, text='AC',width=9,height=wb, background= 'gray', command=borrado).place(x=260, y=yf3)
+but16= Button(ventana, text='AC',width=9,height=wb, background= 'gray', command=borrado).place(x=260, y=yf3)
 
-but5= Button(ventana, text='Salir',background='red', width=9,height=wb, command=ventana.quit).place(x=260, y=yf4)
+but17= Button(ventana, text='Salir',background='red', width=9,height=wb, command=ventana.quit).place(x=260, y=yf4)
 
 
 ventana.mainloop()

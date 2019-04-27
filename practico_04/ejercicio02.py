@@ -16,7 +16,7 @@ def intro(n):
 
     global ac, cont, aux
     if cont == 0:
-        v = StringVar(ventana, value='%s' % (n),)
+        v = StringVar(ventana, value='%s ' % (n),)
         Entry(ventana, textvariable=v, width=30, ).place(x=20,y=20)
         aux = n
     else:
@@ -41,8 +41,9 @@ def intro2(val):
         condicional = 1
     else:
         aux3 = val
-        Label(ventana, text= '%s %s                                           ' % (totalizador, val), ).place(x=20, y=3)
-        v = StringVar(ventana, value='',)
+        print(aux3)
+        Label(ventana, text= '%s %s                                            ' % (totalizador, aux3),).place(x=20, y=3)
+        v = StringVar(ventana, value='               ')
         Entry(ventana, textvariable=v, width=30, ).place(x=20,y=20)
     return 0
 
@@ -55,7 +56,7 @@ def anteintro2(val):
 
 def suma():
 
-    global aux, aux2, totalizador
+    global aux, aux2, totalizador, aux3
     if totalizador == 0:
         totalizador = aux + aux2
         aux = 0
@@ -63,10 +64,11 @@ def suma():
         return totalizador
     else:
         totalizador = totalizador + aux
+        aux = 0
         return totalizador
 
 def resta():
-    global aux, aux2, totalizador
+    global aux, aux2, totalizador, aux3
     if totalizador == 0:
         totalizador =  aux2 - aux
         aux = 0
@@ -74,10 +76,11 @@ def resta():
         return totalizador
     else:
         totalizador = totalizador - aux
+        aux = 0
         return totalizador
 
 def multiplica():
-    global aux, aux2, totalizador
+    global aux, aux2, totalizador, aux3
     if totalizador == 0:
         totalizador = aux * aux2
         aux = 0
@@ -85,10 +88,11 @@ def multiplica():
         return totalizador
     else:
         totalizador = totalizador * aux
+        aux = 0
         return totalizador
 
 def divide():
-    global aux, aux2, totalizador
+    global aux, aux2, totalizador, aux3
     if totalizador == 0:
         totalizador = aux2 / aux
         aux = 0
@@ -96,11 +100,12 @@ def divide():
         return totalizador
     else:
         totalizador = totalizador / aux
+        aux = 1
         return totalizador
 
-def calculo():
-    global aux, aux2, aux3
-    Label(ventana, text= '%s %s %s =' % (aux2, aux3, aux), ).place(x=20, y=3)
+def calculo(num):
+    global aux, aux3, aux2
+    Label(ventana, text= '%s %s %s =' % (num, aux3, aux), ).place(x=20, y=3)
     if aux3 == '+':
         v = StringVar(ventana, value='%s' % (suma()),)
         Entry(ventana, textvariable=v, width=30, ).place(x=20,y=20)
@@ -116,23 +121,12 @@ def calculo():
     return 0
 
 def antecalculo():
-    global aux, totalizador, aux3
+    global aux, totalizador, aux3, aux2
     if totalizador == 0:
-        calculo()
+        calculo(aux2)
+        aux2 = 0
     else:
-        Label(ventana, text= '%s %s %s =' % (totalizador, aux3, aux), ).place(x=20, y=3)
-        if aux3 == '+':
-            v = StringVar(ventana, value='%s' % (suma()),)
-            Entry(ventana, textvariable=v, width=30, ).place(x=20,y=20)
-        elif aux3 == '-':
-            v = StringVar(ventana, value='%s' % (resta()),)
-            Entry(ventana, textvariable=v, width=30, ).place(x=20,y=20)
-        elif aux3 == '*':
-            v = StringVar(ventana, value='%s' % (multiplica()),)
-            Entry(ventana, textvariable=v, width=30, ).place(x=20,y=20)
-        else:
-            v = StringVar(ventana, value='%s' % (divide()),)
-            Entry(ventana, textvariable=v, width=30, ).place(x=20,y=20)
+        calculo(totalizador)
     return 0
 
 def borrado():

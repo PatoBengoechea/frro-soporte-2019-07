@@ -10,11 +10,12 @@ aux = 0
 aux2 = 0
 aux3 = 0
 totalizador = 0
-condicional = 0
+condicional = 0 #<<<< Ver si puedo usar el contador
 
 def intro(n):
 
     global ac, cont, aux
+
     if cont == 0:
         v = StringVar(ventana, value='%s ' % (n),)
         Entry(ventana, textvariable=v, width=30, ).place(x=20,y=20)
@@ -95,12 +96,15 @@ def divide():
     global aux, aux2, totalizador, aux3
     if totalizador == 0:
         totalizador = aux2 / aux
-        aux = 1
+        aux = 0
         aux2 = 0
         return totalizador
     else:
-        totalizador = totalizador / aux
-        aux = 1
+        if aux == 0:
+            pass
+        else:
+            totalizador = totalizador / aux
+            aux = 0
         return totalizador
 
 def calculo(num):

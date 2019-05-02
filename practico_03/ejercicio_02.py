@@ -27,6 +27,8 @@ def agregar_persona(nombre, nacimiento, dni, altura):
 
 
 
+
+
 @reset_tabla
 def pruebas():
     id_juan = agregar_persona('juan perez', datetime.datetime(1988, 5, 15), 32165498, 180)

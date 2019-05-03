@@ -78,14 +78,24 @@ class Ventana1:
         print(self.item)
 
     def borrar(self):
+
+        global ciudades
+
         print('El Item a borrar es: %s' % (self.item))
         p = self.deleteme()
         print(p)
         if p == 1:
             self.tv.detach(self.item)
-            
+
+            for c in ciudades:
+                if c[7:] == self.item:
+                    ciudades.remove(c)
+                else:
+                    pass
         else:
             pass
+
+        print(ciudades)
 
     def deleteme(self):
         ressult = messagebox.askquestion("Delete", "Are You Sure?", icon='warning')

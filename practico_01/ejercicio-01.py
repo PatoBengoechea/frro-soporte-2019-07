@@ -7,4 +7,3 @@ def suma(a, b):
     return c
 
 assert(suma(2, 1)==3)
-

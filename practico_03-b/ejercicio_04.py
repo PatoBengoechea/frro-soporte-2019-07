@@ -33,7 +33,7 @@ session = DBSession()
 def buscar_persona(id_persona):
     user = session.query(Persona).filter(Persona.IdPersona == id_persona)
     print(user)
-    return False
+    return user
 
 
 # @reset_tabla

@@ -9,12 +9,37 @@
 
 import datetime
 
-from practico_03.ejercicio_02 import agregar_persona
-from practico_03.ejercicio_06 import reset_tabla
+# from practico_03.ejercicio_02 import agregar_persona
+# from practico_03.ejercicio_06 import reset_tabla
+
+from ejercicio_04 import buscar_persona
+
+from practico_03.ejercicio_01 import borrar_tabla, crear_tabla
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Date, VARCHAR, ForeignKey
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class Persona(Base):
+    __tablename__='Persona'
+    IdPersona = Column(Integer, primary_key=True)
+    Nombre = Column(VARCHAR(30))
+    FechaNacimiento = Column(Date)
+    Dni = Column(Integer)
+    Altura = Column(Integer)
+
+
+engine = create_engine('mysql://root:root@localhost:3306/soporte2019')
+Base.metadata.bind = engine
+DBSession = sessionmaker()
+DBSession.bind = engine
+session = DBSession()
 
 
 def agregar_peso(id_persona, fecha, peso):
-    pass
+    user = buscar_persona(id_persona)
+
 
 
 @reset_tabla

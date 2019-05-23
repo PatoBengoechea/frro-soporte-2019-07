@@ -7,9 +7,31 @@ from practico_03.ejercicio_01 import reset_tabla
 from practico_03.ejercicio_02 import agregar_persona
 from practico_03.ejercicio_04 import buscar_persona
 
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Date, VARCHAR
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+class Persona(Base):
+    __tablename__='Persona'
+    IdPersona = Column(Integer, primary_key=True)
+    Nombre = Column(VARCHAR(30))
+    FechaNacimiento = Column(Date)
+    Dni = Column(Integer)
+    Altura = Column(Integer)
+
+
+engine = create_engine('mysql://root:root@localhost:3306/soporte2019')
+Base.metadata.bind = engine
+DBSession = sessionmaker()
+DBSession.bind = engine
+session = DBSession()
+
 
 def actualizar_persona(id_persona, nombre, nacimiento, dni, altura):
-    return False
+    var = session.query(Persona).filter(Persona.IdPersona==id_persona).update({"Nombre":nombre, "FechaNacimiento":dni, "Altura": altura})
+    return var
 
 
 @reset_tabla

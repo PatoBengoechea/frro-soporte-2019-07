@@ -3,37 +3,43 @@
 
 import datetime
 
-from practico_03.ejercicio_01 import reset_tabla
-from practico_03.ejercicio_02 import agregar_persona
-from practico_03.ejercicio_04 import buscar_persona
+from ejercicio_01 import Persona
+from ejercicio_04 import buscar_persona
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Date, VARCHAR
 from sqlalchemy.orm import sessionmaker
 
+
 Base = declarative_base()
 
-class Persona(Base):
-    __tablename__='Persona'
-    IdPersona = Column(Integer, primary_key=True)
-    Nombre = Column(VARCHAR(30))
-    FechaNacimiento = Column(Date)
-    Dni = Column(Integer)
-    Altura = Column(Integer)
+engine = create_engine('sqlite:///socios.db', echo=True)
+Base.metadata.create_all(bind=engine)
+Session = sessionmaker(bind=engine)
 
-
-engine = create_engine('mysql://root:root@localhost:3306/soporte2019')
-Base.metadata.bind = engine
-DBSession = sessionmaker()
-DBSession.bind = engine
-session = DBSession()
+session = Session()
 
 
 def actualizar_persona(id_persona, nombre, nacimiento, dni, altura):
-    var = session.query(Persona).filter(Persona.IdPersona==id_persona).update({"Nombre":nombre, "FechaNacimiento":dni, "Altura": altura})
-    return var
+    aux = buscar_persona(id_persona)
 
+    if aux == False:
 
+        return False
+    else:
+        persona = session.query(Persona).filter(Persona.idPersona == id_persona).one()
+        persona.nombre = nombre
+        persona.nacimiento = nacimiento
+        persona.dni = dni
+        persona.altura = altura
+
+        session.commit()
+
+        return True
+
+actualizar_persona(3, 'cacho', datetime.datetime(1995, 12, 1), 99999, 185)
+
+'''
 @reset_tabla
 def pruebas():
     id_juan = agregar_persona('juan perez', datetime.datetime(1988, 5, 15), 32165498, 180)
@@ -43,3 +49,4 @@ def pruebas():
 
 if __name__ == '__main__':
     pruebas()
+'''

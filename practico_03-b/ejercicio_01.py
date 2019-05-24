@@ -6,27 +6,31 @@
 # - Altura: Int()
 
 # Implementar la funcion borrar_tabla, que borra la tabla creada anteriormente.
+
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Date, VARCHAR
+from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker
+
+import datetime
 
 Base = declarative_base()
 
 class Persona(Base):
+
     __tablename__='Persona'
-    IdPersona = Column(Integer, primary_key=True)
-    Nombre = Column(VARCHAR(30))
-    FechaNacimiento = Column(Date)
-    Dni = Column(Integer)
-    Altura = Column(Integer)
+
+    idPersona = Column('idPersona', Integer, primary_key=True, autoincrement=True)
+    nombre = Column('nombre', String(30))
+    fechaNacimiento = Column('fechaNacimiento', DateTime)
+    dni = Column('dni', Integer)
+    altura = Column('Altura', Integer)
 
 
-engine = create_engine('mysql://root:root@localhost:3306/soporte2019')
-Base.metadata.bind = engine
-DBSession = sessionmaker()
-DBSession.bind = engine
-session = DBSession()
+engine = create_engine('sqlite:///socios.db', echo=True)
+Base.metadata.create_all(bind=engine)
+Session = sessionmaker(bind=engine)
 
+session = Session()
 
 
 
@@ -48,3 +52,17 @@ def reset_tabla(func):
 
 
 crear_tabla()
+
+'''
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Carga de datos<<<<<<<<<<<<<<<<<<<<<>>>>
+soc1 = Persona()
+soc1.dni = 39246898
+soc1.nombre = 'Juan'
+soc1.altura = 1
+soc1.fechaNacimiento = datetime.datetime(1995, 12, 1)
+
+session.add(soc1)
+session.commit()
+
+'''
+

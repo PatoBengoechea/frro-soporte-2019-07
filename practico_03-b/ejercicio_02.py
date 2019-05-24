@@ -3,38 +3,38 @@
 
 import datetime
 
-#from practico_03.ejercicio_01 import reset_tabla
+from ejercicio_01 import reset_tabla
+from ejercicio_01 import Persona
+
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Date, VARCHAR
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
-class Persona(Base):
-    __tablename__='Persona'
-    IdPersona = Column(Integer, primary_key=True)
-    Nombre = Column(VARCHAR(30))
-    FechaNacimiento = Column(Date)
-    Dni = Column(Integer)
-    Altura = Column(Integer)
+engine = create_engine('sqlite:///socios.db', echo=True)
+Base.metadata.create_all(bind=engine)
+Session = sessionmaker(bind=engine)
 
-
-engine = create_engine('mysql://root:root@localhost:3306/soporte2019')
-Base.metadata.bind = engine
-DBSession = sessionmaker()
-DBSession.bind = engine
-session = DBSession()
+session = Session()
 
 
 def agregar_persona(nombre, nacimiento, dni, altura):
-    per = Persona()
-    per.Nombre =nombre
-    per.FechaNacimiento = nacimiento
-    per.Dni = dni
-    per.Altura = altura
-    session.add(per)
+
+    soc1 = Persona()
+
+    soc1.dni = dni
+    soc1.nombre = nombre
+    soc1.altura = altura
+    soc1.fechaNacimiento = nacimiento
+
+    session.add(soc1)
     session.commit()
+
+    obj = session.query(Persona).order_by(Persona.idPersona.desc()).first()
+
+    print('Persona id: %s, Nombre: %s' % (obj.idPersona, obj.nombre))
 
 
 #@reset_tabla
@@ -47,4 +47,4 @@ def agregar_persona(nombre, nacimiento, dni, altura):
 #if __name__ == '__main__':
 #    pruebas()
 
-agregar_persona('Patricio', '1995-11-1', 99999, 185)
+agregar_persona('Patricio', datetime.datetime(1995, 12, 1), 99999, 185)

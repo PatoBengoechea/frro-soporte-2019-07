@@ -5,40 +5,49 @@
 
 # Implementar la funcion borrar_tabla, que borra la tabla creada anteriormente.
 
-from practico_03.ejercicio_01 import borrar_tabla, crear_tabla
+import datetime
+
+from ejercicio_01 import Persona
+
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Date, VARCHAR, ForeignKey
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Column, Integer, DateTime, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
 
 Base = declarative_base()
 
-class Persona(Base):
-    __tablename__='Persona'
-    IdPersona = Column(Integer, primary_key=True)
-    Nombre = Column(VARCHAR(30))
-    FechaNacimiento = Column(Date)
-    Dni = Column(Integer)
-    Altura = Column(Integer)
+engine = create_engine('sqlite:///socios.db', echo=True)
+Base.metadata.create_all(bind=engine)
+Session = sessionmaker(bind=engine)
+
+session = Session()
+
+class Peso(Base):
+    __tablename__='PersonaPeso'
+
+    idPeso = Column('idPeso', Integer, primary_key=True, autoincrement=True)
+    idExt = Column('idPersona', Integer, ForeignKey('Persona.idPersona'))
+    fecha = Column('fecha', DateTime)
+    peso = Column('peso', Integer, nullable= False)
+
+    id = relationship("Persona")
 
 
-engine = create_engine('mysql://root:root@localhost:3306/soporte2019')
-Base.metadata.bind = engine
-DBSession = sessionmaker()
-DBSession.bind = engine
-session = DBSession()
 
 
 def crear_tabla_peso():
-    ____tablename__ = 'tabla_peso'
-    IdPersona = Column(Integer, ForeignKey("Persona.IdPersona"))
-    Fecha = Column(Date)
-    Peso = Column(Integer)
+
+    Base.metadata.create_all(engine)
 
 
 def borrar_tabla_peso():
-    Base.metadata.drop_all(bind=engine, tables=[tabla_peso.__table__])
+
+    Peso.__table__.drop()
 
 
+
+crear_tabla_peso()
+
+'''
 # no modificar
 def reset_tabla(func):
     def func_wrapper():
@@ -48,3 +57,4 @@ def reset_tabla(func):
         borrar_tabla_peso()
         borrar_tabla()
     return func_wrapper
+'''

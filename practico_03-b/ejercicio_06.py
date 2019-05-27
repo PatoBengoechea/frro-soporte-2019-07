@@ -5,8 +5,6 @@
 
 # Implementar la funcion borrar_tabla, que borra la tabla creada anteriormente.
 
-import datetime
-
 from ejercicio_01 import Persona
 
 from sqlalchemy.ext.declarative import declarative_base

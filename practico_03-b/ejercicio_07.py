@@ -8,7 +8,6 @@
 # - False en caso de no cumplir con alguna validacion.
 
 import datetime
-from ejercicio_01 import Persona
 from ejercicio_06 import Peso
 from ejercicio_04 import buscar_persona
 

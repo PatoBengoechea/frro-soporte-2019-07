@@ -11,8 +11,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker
 
-import datetime
-
 Base = declarative_base()
 
 class Persona(Base):

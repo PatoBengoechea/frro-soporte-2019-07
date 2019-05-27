@@ -15,16 +15,42 @@
 # - False en caso de no cumplir con alguna validacion.
 
 import datetime
+from ejercicio_06 import Peso
+from ejercicio_04 import buscar_persona
 
-from practico_03.ejercicio_02 import agregar_persona
-from practico_03.ejercicio_06 import reset_tabla
-from practico_03.ejercicio_07 import agregar_peso
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+Base = declarative_base()
+
+engine = create_engine('sqlite:///socios.db', echo=True)
+Base.metadata.create_all(bind=engine)
+Session = sessionmaker(bind=engine)
+
+session = Session()
 
 
-def listar_pesos(id_persona):
-    return []
+def listar_pesos(id):
+
+    user = buscar_persona(id)
+    lpe = []
+
+    if user == False:
+        print('El usuario no existe')
+        return False
+    else:
+        pesos = session.query(Peso).filter(Peso.id_persona == id)
+        for p in pesos:
+            r = (p.fecha.strftime("%Y-%m-%d"),p.peso)
+            lpe.append(r)
+
+    return lpe
+
+listar_pesos(1)
 
 
+'''
 @reset_tabla
 def pruebas():
     id_juan = agregar_persona('juan perez', datetime.datetime(1988, 5, 15), 32165498, 180)
@@ -42,3 +68,4 @@ def pruebas():
 
 if __name__ == '__main__':
     pruebas()
+'''

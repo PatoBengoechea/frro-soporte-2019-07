@@ -17,7 +17,7 @@ Base = declarative_base()
 
 class Persona(Base):
 
-    __tablename__='Persona'
+    __tablename__='persona'
 
     idPersona = Column('idPersona', Integer, primary_key=True, autoincrement=True)
     nombre = Column('nombre', String(30))
@@ -52,6 +52,7 @@ def reset_tabla(func):
 
 
 crear_tabla()
+
 
 '''
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Carga de datos<<<<<<<<<<<<<<<<<<<<<>>>>

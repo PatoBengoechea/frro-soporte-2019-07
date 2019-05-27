@@ -22,18 +22,23 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 class Peso(Base):
-    __tablename__='PersonaPeso'
+
+    __tablename__='personaPeso'
 
     idPeso = Column('idPeso', Integer, primary_key=True, autoincrement=True)
-    idExt = Column('idPersona', Integer, ForeignKey('Persona.idPersona'))
+    id_persona = Column(Integer, ForeignKey(Persona.idPersona))
     fecha = Column('fecha', DateTime)
     peso = Column('peso', Integer, nullable= False)
 
-    id = relationship("Persona")
 
-
-
-
+'''
+def func_wrapper():
+    crear_tabla()
+    crear_tabla_peso()
+    func()
+    borrar_tabla_peso()
+    borrar_tabla()
+'''
 def crear_tabla_peso():
 
     Base.metadata.create_all(engine)
@@ -41,7 +46,7 @@ def crear_tabla_peso():
 
 def borrar_tabla_peso():
 
-    Peso.__table__.drop()
+    Peso.__table__.drop(engine)
 
 
 
@@ -50,11 +55,5 @@ crear_tabla_peso()
 '''
 # no modificar
 def reset_tabla(func):
-    def func_wrapper():
-        crear_tabla()
-        crear_tabla_peso()
-        func()
-        borrar_tabla_peso()
-        borrar_tabla()
     return func_wrapper
 '''

@@ -47,4 +47,6 @@ def agregar_persona(nombre, nacimiento, dni, altura):
 #if __name__ == '__main__':
 #    pruebas()
 
-agregar_persona('Patricio', datetime.datetime(1995, 12, 1), 99999, 185)
+agregar_persona('Patricio', datetime.datetime(1995, 8, 1), 11111, 185)
+agregar_persona('Juan', datetime.datetime(1995, 12, 1), 99999, 164)
+agregar_persona('Sofia', datetime.datetime(1995, 4, 15), 12121, 163)

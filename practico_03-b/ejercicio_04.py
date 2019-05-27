@@ -46,6 +46,6 @@ def buscar_persona(id_persona):
 #     pruebas()
 
 
-assert (buscar_persona(2)[0] == 2)
+
 assert (buscar_persona(7) == False)
 

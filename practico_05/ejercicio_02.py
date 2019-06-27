@@ -3,7 +3,14 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from practico_05.ejercicio_01 import Base, Socio
+from ejercicio_01 import Base, Socio
+
+engine = create_engine('sqlite:///socios.db', echo=True)
+Base.metadata.create_all(bind=engine)
+Session = sessionmaker(bind=engine)
+
+session = Session()
+Base.metadata.create_all(engine)
 
 
 class DatosSocio(object):
@@ -21,7 +28,11 @@ class DatosSocio(object):
         Devuelve None si no encuentra nada.
         :rtype: Socio
         """
-        return
+
+        socio = session.query(Socio).filter_by(id = id_socio).first()
+        print(socio)
+        return socio
+
 
     def buscar_dni(self, dni_socio):
         """
@@ -29,14 +40,17 @@ class DatosSocio(object):
         Devuelve None si no encuentra nada.
         :rtype: Socio
         """
-        return
+        socio = session.query(Socio).filter_by(dni=dni_socio).first()
+        print(socio)
+        return socio
 
     def todos(self):
         """
         Devuelve listado de todos los socios en la base de datos.
         :rtype: list
         """
-        return []
+        socios = session.query(Socio)
+        return socios
 
     def borrar_todos(self):
         """
@@ -44,7 +58,9 @@ class DatosSocio(object):
         Devuelve True si el borrado fue exitoso.
         :rtype: bool
         """
-        return False
+        socios = session.query(Socio).delete()
+
+        return socios
 
     def alta(self, socio):
         """
@@ -52,7 +68,18 @@ class DatosSocio(object):
         :type socio: Socio
         :rtype: Socio
         """
-        return socio
+
+        soc1 = Socio()
+
+        soc1.dni = socio.dni
+        soc1.nombre = socio.nombre
+        soc1.apellido = socio.apellido
+
+        session.add(soc1)
+        session.commit()
+
+        obj = session.query(Socio).order_by(Socio.id.desc()).first()
+        return obj
 
     def baja(self, id_socio):
         """
@@ -60,7 +87,14 @@ class DatosSocio(object):
         Devuelve True si el borrado fue exitoso.
         :rtype: bool
         """
-        return False
+        socios = session.query(Socio).filter(Socio.id == id_socio).delete()
+        print(socios)
+        if socios == 0:
+            a = False
+        else :
+            a = True
+        print(a)
+        return a
 
     def modificacion(self, socio):
         """
@@ -69,8 +103,24 @@ class DatosSocio(object):
         :type socio: Socio
         :rtype: Socio
         """
-        return socio
+        aux = DatosSocio.buscar(socio.id)
 
+        if aux == False:
+
+            return False
+        else:
+            persona = session.query(Socio).filter(Socio.id == socio.id).one()
+            persona.nombre = socio.nombre
+            persona.apellido = socio.apellido
+            persona.dni = socio.dni
+
+            session.commit()
+
+            return True
+            return persona
+
+
+DatosSocio.buscar_dni(Socio, 12345678)
 
 def pruebas():
     # alta
@@ -87,7 +137,7 @@ def pruebas():
 
     # buscar dni
     socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
-    assert datos.buscar(socio_2.dni) == socio_2
+    assert datos.buscar_dni(socio_2.dni) == socio_2
 
     # modificacion
     socio_3 = datos.alta(Socio(dni=12345680, nombre='Susana', apellido='Gimenez'))
@@ -111,3 +161,4 @@ def pruebas():
 
 if __name__ == '__main__':
     pruebas()
+

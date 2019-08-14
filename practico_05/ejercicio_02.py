@@ -3,7 +3,7 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ejercicio_01 import Base, Socio
+from practico_05.ejercicio_01 import  Base, Socio
 
 engine = create_engine('sqlite:///socios.db', echo=True)
 Base.metadata.create_all(bind=engine)
@@ -49,7 +49,7 @@ class DatosSocio(object):
         Devuelve listado de todos los socios en la base de datos.
         :rtype: list
         """
-        socios = session.query(Socio)
+        socios = session.query(Socio).all()
         return socios
 
     def borrar_todos(self):
@@ -103,7 +103,9 @@ class DatosSocio(object):
         :type socio: Socio
         :rtype: Socio
         """
+
         aux = DatosSocio.buscar(socio.id)
+
 
         if aux == False:
 
@@ -116,7 +118,6 @@ class DatosSocio(object):
 
             session.commit()
 
-            return True
             return persona
 
 
@@ -132,19 +133,22 @@ def pruebas():
     assert datos.baja(socio.id) == True
 
     # buscar
-    socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
-    assert datos.buscar(socio_2.id) == socio_2
+    #socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
+    #assert datos.buscar(socio_2.id) == socio_2
 
     # buscar dni
-    socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
-    assert datos.buscar_dni(socio_2.dni) == socio_2
+    #socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
+    #assert datos.buscar_dni(socio_2.dni) == socio_2
 
     # modificacion
-    socio_3 = datos.alta(Socio(dni=12345680, nombre='Susana', apellido='Gimenez'))
-    socio_3.nombre = 'Moria'
-    socio_3.apellido = 'Casan'
-    socio_3.dni = 13264587
-    datos.modificacion(socio_3)
+    socio_3 = Socio(dni=12345680, nombre='Susana', apellido='Gimenez')
+    datos2 = DatosSocio()
+    socio2 = datos2.alta(socio_3)
+    socio2.nombre = 'Moria'
+    socio2.apellido = 'Casan'
+    socio2.dni = 13264587
+    print(socio2.nombre)
+    datos2.modificacion(socio2)
     socio_3_modificado = datos.buscar(socio_3.id)
     assert socio_3_modificado.id == socio_3.id
     assert socio_3_modificado.nombre == 'Moria'

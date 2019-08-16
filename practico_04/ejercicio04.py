@@ -43,7 +43,7 @@ class Ventana1:
 
         self.imprmirListado(self.tv)
 
-        self.tv.bind('<ButtonRelease-1>', self.select_item) #<<<< No funciona
+        self.tv.bind('<ButtonRelease-1>', self.select_item)
 
         #===========================================Botones============================================================
 

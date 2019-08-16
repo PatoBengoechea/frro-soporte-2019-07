@@ -40,7 +40,7 @@ class DatosSocio(object):
         Devuelve None si no encuentra nada.
         :rtype: Socio
         """
-        socio = session.query(Socio).filter_by(dni=dni_socio).first()
+        socio = session.query(Socio).filter(Socio.dni == dni_socio)
         print(socio)
         return socio
 
@@ -88,6 +88,7 @@ class DatosSocio(object):
         :rtype: bool
         """
         socios = session.query(Socio).filter(Socio.id == id_socio).delete()
+        session.commit()
         print(socios)
         if socios == 0:
             a = False
@@ -104,21 +105,20 @@ class DatosSocio(object):
         :rtype: Socio
         """
 
-        aux = DatosSocio.buscar(socio.id)
+        aux = self.buscar(socio.id)
+        print('El socio a modificar en capa de datos:', aux.id, aux.nombre)
 
-
-        if aux == False:
-
+        if aux == None:
             return False
         else:
-            persona = session.query(Socio).filter(Socio.id == socio.id).one()
-            persona.nombre = socio.nombre
-            persona.apellido = socio.apellido
-            persona.dni = socio.dni
+            #persona = session.query(Socio).filter(Socio.dni == aux.id)
+            aux.nombre = socio.nombre
+            aux.apellido = socio.apellido
+            aux.dni = socio.dni
 
             session.commit()
 
-            return persona
+            return aux
 
 
 DatosSocio.buscar_dni(Socio, 12345678)

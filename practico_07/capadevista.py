@@ -28,6 +28,9 @@ class Ventana1:
 
         self.tv["columns"]=("one","two","three","four")
 
+        vsb = ttk.Scrollbar(self.tv, orient="vertical", command=self.tv.yview)
+        vsb.place(x=30+355+2, y=0, height=200+20)
+
         #====================================TVColums==============================================================
         self.tv.column("one", width=100 )
         self.tv.column("two", width=100 )
@@ -122,6 +125,8 @@ class Ventana1:
     def new_window(self, t):
         # t es un parametro de tipo que me permite conocer por que metodo se solicito la nueva ventana
         self.newWindow = Toplevel(self.master)
+        if t == 2:
+            self.itemAc = None
         self.app = Ventana2(self.newWindow, self, self.itemAc, t)
 
     def selectItem(self, a):
@@ -146,13 +151,13 @@ class Ventana2:
         self.master = master
         if t == 1:
             self.master.title('Modificar Socio')
+            self.item = item
         else:
             self.master.title('Agregar Socio')
         self.master.geometry('350x200')
         self.frame = Frame(self.master)
         self.frame.pack()
         self.v1 = v1
-        self.item = item
 
 
         #====================================Variables===========================================================

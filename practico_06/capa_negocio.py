@@ -3,6 +3,9 @@
 from practico_05.ejercicio_01 import Socio
 from practico_05.ejercicio_02 import DatosSocio
 
+MIN_CARACTERES = 3
+MAX_CARACTERES = 15
+MAX_SOCIOS = 200
 
 class DniRepetido(Exception):
     pass
@@ -18,9 +21,7 @@ class MaximoAlcanzado(Exception):
 
 class NegocioSocio(object):
 
-    MIN_CARACTERES = 3
-    MAX_CARACTERES = 15
-    MAX_SOCIOS = 200
+
 
     def __init__(self):
         self.datos = DatosSocio()
@@ -54,7 +55,7 @@ class NegocioSocio(object):
 
         return ds.todos()
 
-    def alta(self, socio):
+    def alta(self, nombre, apellido, dni):
         """
         Da de alta un socio.
         Se deben validar las 3 reglas de negocio primero.
@@ -64,14 +65,19 @@ class NegocioSocio(object):
         :rtype: bool
         """
         neg = NegocioSocio()
+        soc = Socio()
+        soc.nombre = nombre
+        soc.apellido = apellido
+        soc.dni = dni
         ds = DatosSocio()
-        ds2 = ds.buscar_dni(socio.dni)
-        if neg.regla_1(socio)==False:
+        #ds2 = ds.buscar_dni(socio.dni)
+        if neg.regla_1(dni)==False:
             return False
-        if neg.regla_2(socio)==False:
+        if neg.regla_2(nombre, apellido)==False:
             return False
-        if neg.regla_3(socio)==False:
+        if neg.regla_3()==False:
             return False
+        ds.alta(soc)
         return True
 
     def baja(self, id_socio):
@@ -85,7 +91,7 @@ class NegocioSocio(object):
 
         return ds.baja(id_socio)
 
-    def modificacion(self, socio):
+    def modificacion(self, id, n, a, dni):
         """
         Modifica un socio.
         Se debe validar la regla 2 primero.
@@ -94,33 +100,32 @@ class NegocioSocio(object):
         :type socio: Socio
         :rtype: bool
         """
-        neg = NegocioSocio
-        ds = DatosSocio
-        a=True
-        try:
-            if (len(socio.nombre)>neg.MAX_CARACTERES):
-                a=False
-            if (len(socio.nombre)<neg.MIN_CARACTERES):
-                a=False
-        except LongitudInvalida as error:
-            print("La longitud es invalida por lo tanto no puede modificarse el socio")
+        neg = NegocioSocio()
+        ds = DatosSocio()
 
-        if a==True:
-            ds.modificacion(socio)
-        return False
+        soc = Socio()
+        soc.id = id
+        soc.nombre = n
+        soc.apellido = a
+        soc.dni = dni
 
-    def regla_1(self, socio):
+        if neg.regla_2(n, a) ==False:
+            return False
+        ds.modificacion(soc)
+        return True
+
+
+    def regla_1(self, dni):
         """
         Validar que el DNI del socio es unico (que ya no este usado).
         :type socio: Socio
         :raise: DniRepetido
         :return: bool
         """
-        ds = DatosSocio
-        neg = NegocioSocio
-        ds2 = DatosSocio.buscar_dni(socio.dni)
+        ds2 = DatosSocio()
+        soc = ds2.buscar_dni(dni)
         try:
-            if(socio.dni==ds2.dni):
+            if(soc != None):
                 error = Exception
         except DniRepetido as error:
             print("El dni ya esta cargado al sistema")
@@ -129,19 +134,19 @@ class NegocioSocio(object):
 
         return True
 
-    def regla_2(self, socio):
+    def regla_2(self, nombre, apellido):
         """
         Validar que el nombre y el apellido del socio cuenten con mas de 3 caracteres pero menos de 15.
         :type socio: Socio
         :raise: LongitudInvalida
         :return: bool
         """
-        ds = DatosSocio
+        global MAX_CARACTERES, MIN_CARACTERES
         neg = NegocioSocio
-        nom=len(socio.nombre)
-        ape=len(socio.apellido)
+        lnom=len(nombre)
+        lape=len(apellido)
         try:
-            if(nom>neg.MAX_CARACTERES or nom<neg.MIN_CARACTERES or ape>neg.MAX_CARACTERES or ape<neg.MIN_CARACTERES):
+            if(lnom> MAX_CARACTERES or lnom< MIN_CARACTERES or lape>MAX_CARACTERES or lape< MIN_CARACTERES):
                 error = Exception
         except LongitudInvalida as error:
             print("Longitud invalida en nombre o apellido del socio")
@@ -155,12 +160,13 @@ class NegocioSocio(object):
         :raise: MaximoAlcanzado
         :return: bool
         """
-        ds = DatosSocio
-        neg = NegocioSocio
-        cant = len(ds.todos())
+        global MAX_SOCIOS
 
+        ds = DatosSocio()
+        cant = len(ds.todos())
+        print('cantidad de socios:', cant)
         try:
-            if cant>neg.MAX_SOCIOS:
+            if cant> MAX_SOCIOS:
                 error = Exception
         except MaximoAlcanzado as error:
             print("Se ha alcanzado el maximo permitido de socios")

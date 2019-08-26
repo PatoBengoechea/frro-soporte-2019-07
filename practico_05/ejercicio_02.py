@@ -3,7 +3,7 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ejercicio_01 import Base, Socio
+from practico_05.ejercicio_01 import  Base, Socio
 
 engine = create_engine('sqlite:///socios.db', echo=True)
 Base.metadata.create_all(bind=engine)
@@ -40,7 +40,7 @@ class DatosSocio(object):
         Devuelve None si no encuentra nada.
         :rtype: Socio
         """
-        socio = session.query(Socio).filter_by(dni=dni_socio).first()
+        socio = session.query(Socio).filter(Socio.dni == dni_socio)
         print(socio)
         return socio
 
@@ -49,7 +49,7 @@ class DatosSocio(object):
         Devuelve listado de todos los socios en la base de datos.
         :rtype: list
         """
-        socios = session.query(Socio)
+        socios = session.query(Socio).all()
         return socios
 
     def borrar_todos(self):
@@ -88,6 +88,7 @@ class DatosSocio(object):
         :rtype: bool
         """
         socios = session.query(Socio).filter(Socio.id == id_socio).delete()
+        session.commit()
         print(socios)
         if socios == 0:
             a = False
@@ -103,21 +104,21 @@ class DatosSocio(object):
         :type socio: Socio
         :rtype: Socio
         """
-        aux = DatosSocio.buscar(socio.id)
 
-        if aux == False:
+        aux = self.buscar(socio.id)
+        print('El socio a modificar en capa de datos:', aux.id, aux.nombre)
 
+        if aux == None:
             return False
         else:
-            persona = session.query(Socio).filter(Socio.id == socio.id).one()
-            persona.nombre = socio.nombre
-            persona.apellido = socio.apellido
-            persona.dni = socio.dni
+            #persona = session.query(Socio).filter(Socio.dni == aux.id)
+            aux.nombre = socio.nombre
+            aux.apellido = socio.apellido
+            aux.dni = socio.dni
 
             session.commit()
 
-            return True
-            return persona
+            return aux
 
 
 DatosSocio.buscar_dni(Socio, 12345678)
@@ -132,19 +133,22 @@ def pruebas():
     assert datos.baja(socio.id) == True
 
     # buscar
-    socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
-    assert datos.buscar(socio_2.id) == socio_2
+    #socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
+    #assert datos.buscar(socio_2.id) == socio_2
 
     # buscar dni
-    socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
-    assert datos.buscar_dni(socio_2.dni) == socio_2
+    #socio_2 = datos.alta(Socio(dni=12345679, nombre='Carlos', apellido='Perez'))
+    #assert datos.buscar_dni(socio_2.dni) == socio_2
 
     # modificacion
-    socio_3 = datos.alta(Socio(dni=12345680, nombre='Susana', apellido='Gimenez'))
-    socio_3.nombre = 'Moria'
-    socio_3.apellido = 'Casan'
-    socio_3.dni = 13264587
-    datos.modificacion(socio_3)
+    socio_3 = Socio(dni=12345680, nombre='Susana', apellido='Gimenez')
+    datos2 = DatosSocio()
+    socio2 = datos2.alta(socio_3)
+    socio2.nombre = 'Moria'
+    socio2.apellido = 'Casan'
+    socio2.dni = 13264587
+    print(socio2.nombre)
+    datos2.modificacion(socio2)
     socio_3_modificado = datos.buscar(socio_3.id)
     assert socio_3_modificado.id == socio_3.id
     assert socio_3_modificado.nombre == 'Moria'
